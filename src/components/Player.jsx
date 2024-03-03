@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function Player({ initialName, symbol, isActive }) {
+export default function Player({ initialName, symbol, isActive, onChangeName }) {
   const [playerName, setPlayerName] = useState(initialName);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -8,6 +8,10 @@ export default function Player({ initialName, symbol, isActive }) {
     // Best practice: Updating state based on old state - always use a function
     // just setIsEditing(!isEditing) is not enough because react just schedules a state update to true
     setIsEditing((editing) => !editing);
+
+    if (isEditing) {
+      onChangeName(symbol, playerName);
+    }
   }
 
   function handleChange(event) {
