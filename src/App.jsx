@@ -11,13 +11,14 @@ const PLAYERS = {
   O: 'Player 2'
 };
 
-const initialGameBoard = [
+const INITIAL_GAME_BOARD = [
   [null, null, null],
   [null, null, null],
   [null, null, null],
 ];
 
-// helper function
+// HELPER FUNCTIONS:
+
 function deriveActivePlayer(gameTurns) {
   let currentPlayer = "X";
 
@@ -28,15 +29,8 @@ function deriveActivePlayer(gameTurns) {
   return currentPlayer;
 }
 
-function App() {
-  const [players, setPlayers] = useState(PLAYERS);
-  const [gameTurns, setGameTurns] = useState([]);
-  //const [hasWinner, setHasWinner] = useState(false); this state check is redundante because we can check if there is a winner from gameTurns
-
-  const activePlayer = deriveActivePlayer(gameTurns);
-
-  let gameBoard = [...initialGameBoard.map((array) => [...array])];
-
+function deriveGameBoard(gameTurns) {
+  let gameBoard = [...INITIAL_GAME_BOARD.map((array) => [...array])];
   // deriving state - gameBoard is a computed value that is derived from the gameTurns state that is managed in the App component
   for (const turn of gameTurns) {
     const { square, player } = turn;
@@ -45,8 +39,11 @@ function App() {
     gameBoard[row][col] = player;
   }
 
-  let winner;
+  return gameBoard;
+}
 
+function deriveWinner(gameBoard, players) {
+  let winner;
   // check if there is a winner from gameTurns
   for (const combination of WINNING_COMBINATIONS) {
     const firstSquareSymbol =
@@ -65,6 +62,17 @@ function App() {
     }
   }
 
+  return winner;
+}
+
+function App() {
+  const [players, setPlayers] = useState(PLAYERS);
+  const [gameTurns, setGameTurns] = useState([]);
+  //const [hasWinner, setHasWinner] = useState(false); this state check is redundante because we can check if there is a winner from gameTurns
+
+  const activePlayer = deriveActivePlayer(gameTurns);
+  const gameBoard = deriveGameBoard(gameTurns);
+  const winner = deriveWinner(gameBoard, players);
   const hasDraw = gameTurns.length === 9 && !winner;
 
   function handleSelectSquare(rowIndex, colIndex) {
@@ -99,13 +107,13 @@ function App() {
       <div id="game-container">
         <ol id="players" className="highlight-player">
           <Player
-            initialName="Player 1"
+            initialName={PLAYERS.X}
             symbol="X"
             isActive={activePlayer === "X"}
             onChangeName={handlePlayerNameChange}
           />
           <Player
-            initialName="Player 2"
+            initialName={PLAYERS.O}
             symbol="O"
             isActive={activePlayer === "O"}
             onChangeName={handlePlayerNameChange}
