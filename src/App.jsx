@@ -3,6 +3,7 @@ import { useState } from "react";
 import Player from "./components/Player.jsx";
 import GameBoard from "./components/GameBoard.jsx";
 import Log from "./components/Log.jsx";
+import { WINNING_COMBINATIONS } from './winning-combinations.js';
 
 // helper function
 function deriveActivePlayer(gameTurns) {
@@ -17,20 +18,14 @@ function deriveActivePlayer(gameTurns) {
 
 function App() {
   const [gameTurns, setGameTurns] = useState([]);
-  // const [activePlayer, setActivePlayer] = useState("X");
 
   const activePlayer = deriveActivePlayer(gameTurns);
 
   function handleSelectSquare(rowIndex, colIndex) {
-    // setActivePlayer((curActivePlayer) => (curActivePlayer === "X" ? "O" : "X"));
 
     // this function assures state updates in a immutable way and also that different states are not merging
     setGameTurns((prevTurns) => {
       const currentPlayer = deriveActivePlayer(prevTurns);
-
-      // if (prevTurns.length > 0 && prevTurns[0].player === "X") {
-      //   currentPlayer = "O";
-      // }
 
       const updatedTurns = [
         { square: { row: rowIndex, col: colIndex }, player: currentPlayer },
