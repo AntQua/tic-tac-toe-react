@@ -1,33 +1,32 @@
-import { useState } from "react";
 
-const initialGameBoard = [
-  [null, null, null],
-  [null, null, null],
-  [null, null, null],
-];
+// const initialGameBoard = [
+//   [null, null, null],
+//   [null, null, null],
+//   [null, null, null],
+// ];
 
-export default function GameBoard({ onSelectSquare, turns }) {
-  let gameBoard = initialGameBoard;
+export default function GameBoard({ onSelectSquare, board }) {
+  // let gameBoard = initialGameBoard;
 
-  // deriving state - gameBoard is a computed value that is derived from the gameTurns state that is managed in the App component
-  for (const turn of turns) {
-    const { square, player } = turn;
-    const { row, col } = square;
+  // // deriving state - gameBoard is a computed value that is derived from the gameTurns state that is managed in the App component
+  // for (const turn of turns) {
+  //   const { square, player } = turn;
+  //   const { row, col } = square;
 
-    gameBoard[row][col] = player;
-  }
+  //   gameBoard[row][col] = player;
+  // }
 
 
   return (
     <ol id="game-board">
-      {gameBoard.map((row, rowIndex) => (
+      {board.map((row, rowIndex) => (
         <li key={rowIndex}>
           <ol>
             {row.map((playerSymbol, colIndex) => (
               <li key={colIndex}>
-                <button 
-                onClick={() => onSelectSquare(rowIndex, colIndex)}
-                disabled={playerSymbol !== null}
+                <button
+                  onClick={() => onSelectSquare(rowIndex, colIndex)}
+                  disabled={playerSymbol !== null}
                 >
                   {playerSymbol}
                 </button>
